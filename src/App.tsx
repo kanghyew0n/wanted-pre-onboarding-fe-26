@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { getMockData } from "./services/getMockData";
+import { MockData } from "./types/mockData";
+import MockItem from "./components/MockItem";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [page, setPage] = useState(1);
+  const [fetchedData, setFetchedData] = useState<MockData[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    getMockData(1).then((data) => {
+      console.log(data.datas);
+      setFetchedData(data.datas);
+      setTotalPrice(data.datas.reduce((acc, cur) => acc + cur.price, 0));
+    });
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main className="flex flex-col items-center justify-center pt-24">
+      <header className="w-full fixed top-0 flex justify-between items-center px-8 py-4 bg-white/50 backdrop-blur-xl">
+        <h1 className="font-bold text-2xl">challenge!</h1>
+        {totalPrice ? (
+          <h1 className="font-bold text-2xl">total price! : {totalPrice}</h1>
+        ): '스켈레톤?'}
+      </header>
+
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 mt-20">
+        {fetchedData.map((data) => (
+          <MockItem key={data.productId} data={data} />
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </main>
+  );
 }
 
-export default App
+export default App;

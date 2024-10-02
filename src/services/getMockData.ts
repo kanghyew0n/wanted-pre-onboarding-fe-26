@@ -1,7 +1,7 @@
 import { MOCK_DATA } from "../mock/mockData";
 import { MockData } from "../types/mockData";
 
-const PER_PAGE = 12;
+const PER_PAGE = 24;
 
 // 페이지는 1부터 시작함
 export const getMockData = (pageNum: number): Promise<{ datas: MockData[]; isEnd: boolean }> => {

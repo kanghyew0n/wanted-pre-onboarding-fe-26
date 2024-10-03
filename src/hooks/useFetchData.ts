@@ -14,6 +14,8 @@ export const useFetchData = () => {
   };
 
   useEffect(() => {
+    if (page === 0 || isLoading) return;  
+
     const handleGetMockData = async () => {
       setIsLoading(true); 
       try {
